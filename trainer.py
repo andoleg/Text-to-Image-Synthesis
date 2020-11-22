@@ -55,6 +55,11 @@ class Trainer:
         self.data_loader = DataLoader(self.dataset, batch_size=self.batch_size, shuffle=True,
                                 num_workers=self.num_workers)
 
+        # a = next(iter(self.data_loader))
+        # print(dict(a).keys())
+        # print("length: ", len(a))
+        # print(a)
+
         self.optimD = torch.optim.Adam(self.discriminator.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
         self.optimG = torch.optim.Adam(self.generator.parameters(), lr=self.lr, betas=(self.beta1, 0.999))
 
