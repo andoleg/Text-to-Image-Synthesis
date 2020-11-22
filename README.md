@@ -50,6 +50,8 @@ We used the [text embeddings](https://github.com/reedscot/icml2016) provided by 
       - 'class'
       - 'txt'
       
+## Before Usage
+Run `python -m visdom.server` to start Visdom Server
 ## Usage
 ### Training
 

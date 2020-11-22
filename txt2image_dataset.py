@@ -10,6 +10,7 @@ from torch.autograd import Variable
 import pdb
 import torch.nn.functional as F
 
+
 class Text2ImageDataset(Dataset):
 
     def __init__(self, datasetFile, transform=None, split=0):
@@ -80,7 +81,6 @@ class Text2ImageDataset(Dataset):
         example_name = self.dataset_keys[idx]
         example = self.dataset[self.split][example_name]
         return example['embeddings']
-
 
     def validate_image(self, img):
         img = np.array(img, dtype=float)

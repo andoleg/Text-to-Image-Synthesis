@@ -5,7 +5,8 @@ from PIL import ImageDraw, Image, ImageFont
 import torch
 import pdb
 
-class VisdomPlotter(object):
+
+class VisdomPlotter:
 
     """Plots to Visdom"""
 

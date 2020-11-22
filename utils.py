@@ -1,6 +1,6 @@
 import numpy as np
 from torch import nn
-from torch import  autograd
+from torch import autograd
 import torch
 from visualize import VisdomPlotter
 import os
@@ -50,31 +50,31 @@ class minibatch_discriminator(nn.Module):
         return output
 
 
-class Utils(object):
+class Utils:
+
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     @staticmethod
     def smooth_label(tensor, offset):
         return tensor + offset
 
-    @staticmethod
-
     # based on:  https://github.com/caogang/wgan-gp/blob/master/gan_cifar10.py
-    def compute_GP(netD, real_data, real_embed, fake_data, LAMBDA):
+    def compute_GP(self, netD, real_data, real_embed, fake_data, LAMBDA):
         BATCH_SIZE = real_data.size(0)
         alpha = torch.rand(BATCH_SIZE, 1)
         alpha = alpha.expand(BATCH_SIZE, int(real_data.nelement() / BATCH_SIZE)).contiguous().view(BATCH_SIZE, 3, 64, 64)
-        alpha = alpha.cuda()
+        alpha = alpha.to(self.device)
 
         interpolates = alpha * real_data + ((1 - alpha) * fake_data)
 
-        interpolates = interpolates.cuda()
+        interpolates = interpolates.to(self.device)
 
         interpolates = autograd.Variable(interpolates, requires_grad=True)
 
         disc_interpolates, _ = netD(interpolates, real_embed)
 
         gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
-                                  grad_outputs=torch.ones(disc_interpolates.size()).cuda(),
+                                  grad_outputs=torch.ones(disc_interpolates.size()).to(self.device),
                                   create_graph=True, retain_graph=True, only_inputs=True)[0]
 
         gradient_penalty = ((gradients.norm(2, dim=1) - 1) ** 2).mean() * LAMBDA
